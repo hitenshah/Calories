@@ -28,13 +28,6 @@ angular.module('app', ['ionic','starter.controllers'])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-
-    .state('CT', {
-        url: "/ct",
-        abstract: true,
-        templateUrl: "menu.html"
-        //controller: 'AppCtrl'
-    })
     
     .state('page1', {
       url: '/home',

@@ -148,7 +148,9 @@ angular.module('app', ['ionic'])
             </ion-list>
             <div class="spacer" style="height: 40px;"></div>
             <button class="button button-energized button-block trans" ng-click="login()">Log in</button>
-            <a href="#/signup" class="button button-energized button-clear button-block ">Or create an account</a>
+            <a href="#/forgotpassword" class="button button-energized button-clear button-block ">Forgot password ??</a>
+            <div style="text-align:center;">OR<div>
+            <a href="#/signup" class="button button-energized button-clear button-block ">create an account</a>
         </form>
     </ion-content>
 </ion-view></script>
@@ -156,56 +158,109 @@ angular.module('app', ['ionic'])
 <ion-view title="<img src='img/logo.png'  style=' height : 75px; '/>">
 <ion-nav-bar class="bar-energized" style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
             <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
-    
+  
         </ion-nav-bar>
     <ion-content padding="true" scroll="true" class="has-header">
         <form>
             <ion-list>
                 <label class="item item-input trans">
                     <span class="input-label">Name</span>
-                    <input type="text" placeholder="ABCD FULLNAME">
+                    <input type="text" placeholder="ABCD FULLNAME" ng-model="signup.fullname">
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">Age</span>
-                    <input type="date" placeholder="Age">
+                    <span class="input-label">DOB</span>
+                    <input type="date" placeholder="Date of Birth" ng-model="signup.dob">
                 </label>
                 <label class="item item-select" name="Gender">
                     <span class="input-label">Gender</span>
-                    <select>
-                      <option>male</option>
-                      <option>female</option>
+                    <select ng-model="signup.gender">
+                      <option ng-value="1">Male</option>
+                      <option ng-value="2">Female</option>
                     </select>
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">Height</span>
-                    <input type="text" placeholder="Feet &amp; Inches">
+                    <span class="input-label">Height-Feet</span>
+                    <input type="text" placeholder="Feets" ng-model="signup.heightfeet">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Height-Inches</span>
+                    <input type="text" placeholder="Inches" ng-model="signup.heightinches">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Weight</span>
-                    <input type="text" placeholder="50 KG">
+                    <input type="text" placeholder="50 KG" ng-model="signup.weight">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Waistline</span>
-                    <input type="text" placeholder="40 cms">
+                    <input type="text" placeholder="40 cms" ng-model="signup.waistline">
                 </label>
-                <ion-toggle toggle-class="toggle-assertive">Diabetic</ion-toggle>
-                <ion-toggle toggle-class="toggle-positive">Hypertensive</ion-toggle>
-                <ion-toggle toggle-class="toggle-positive">Kidney problem</ion-toggle>
-                <ion-toggle toggle-class="toggle-positive">Smoker</ion-toggle>
+                <label class="item item-select" name="Drinker">
+                    <span class="input-label">Drinker</span>
+                    <select ng-model="signup.drinker">
+                      <option ng-value="1">Everyday</option>
+                      <option ng-value="2">Once a week</option>
+                      <option ng-value="3">Once a fortnight</option>
+                      <option ng-value="4">Once a month</option>
+                    </select>
+                </label>
+                <label class="item item-select" name="Married">
+                    <span class="input-label">Married</span>
+                    <select ng-model="signup.married">
+                      <option ng-value="1">Single</option>
+                      <option ng-value="2">Married</option>
+                      <option ng-value="3">Divorced</option>
+                      <option ng-value="4">Widow</option>
+                    </select>
+                </label>
+                <ion-toggle toggle-class="toggle-assertive"ng-model="signup.daibetic" >Diabetic</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="signup.hypertensive">Hypertensive</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="signup.kidney">Kidney problem</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="signup.smoker">Smoker</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="signup.teeto">Teeto</ion-toggle>
                 <label class="item item-input">
                     <span class="input-label">Mobile</span>
-                    <input type="text" placeholder="1234567890">
+                    <input type="text" placeholder="1234567890" ng-model="signup.mobile">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">E-mail</span>
+                    <input type="email" placeholder="abc@abc.com" ng-model="signup.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Street 1</span>
+                    <input type="text" placeholder="" ng-model="signup.street1">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Street 2</span>
+                    <input type="text" placeholder="" ng-model="signup.street2">
+                </label>
+                <label class="item item-select" name="Cities">
+                    <span class="input-label">City</span>
+                    <select id="CitySelector" ng-model="signup.city">
+                      <option ng-repeat="city in cities" value="{{city.city_id}}">{{city.city_name}}</option>
+                    </select>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Pin</span>
+                    <input type="text" placeholder="" ng-model="signup.pin">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Doctor's Name</span>
+                    <input type="text" placeholder="" ng-model="signup.drname">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Doctor's Place</span>
+                    <input type="text" placeholder="" ng-model="signup.drplace">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Password</span>
-                    <input type="password" placeholder="**********">
+                    <input type="password" placeholder="**********" ng-model="signup.password">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Confirm Password</span>
-                    <input type="password" placeholder="*************">
+                    <input type="password" placeholder="*************" ng-model="signup.repassword">
                 </label>
             </ion-list>
-            <button class="button button-energized button-block ">Sign up</button>
+            <button class="button button-energized button-block" ng-click="CreateUser()">Sign up</button>
         </form>
     </ion-content>
 </ion-view></script>
@@ -219,6 +274,26 @@ angular.module('app', ['ionic'])
     
      <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
         Login Successful :)
+    </div>
+</div>
+</script>
+
+<script id="page5.html" type="text/ng-template">
+
+
+    
+       <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
+       
+    <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
+    
+     <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
+     <form>
+        <label class="item item-input trans">
+            <span class="input-label">E-mail</span>
+           <input  id= "forgetemail" type="email" ng-model="forgetpassword.email" placeholder="abc@abc.com">
+        </label>
+        <button class="button button-energized button-block" ng-click="forgetPassword()">Submit</button>
+      </form>
     </div>
 </div>
 </script>
