@@ -29,18 +29,19 @@ angular.module('app', ['ionic','starter.controllers'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-    .state('CT', {
+    /*.state('CT', {
         url: "/ct",
         abstract: true,
         templateUrl: "menu.html"
         //controller: 'AppCtrl'
-    })
+    })*/
     
     .state('page1', {
       url: '/home',
       templateUrl: 'page1.html'
     })
     
+
     .state('page2', {
       url: '/login',
       templateUrl: 'page2.html',
@@ -53,16 +54,49 @@ angular.module('app', ['ionic','starter.controllers'])
       controller : 'signupCtrl'
     })
 
-    .state('page4', {
-      url: '/Login-success',
-      templateUrl: 'page4.html'
-    })
-
     .state('page5', {
       url: '/forgotpassword',
       templateUrl: 'page5.html',
       controller : 'forgotpassword'
     })
+
+    .state('main', {
+      url : '/main',
+      templateUrl : 'mainContainer.html',
+      abstract : true,
+      controller : 'MainController'
+    })
+
+    .state('main.page4', {
+      url: '/login-success',
+      views: {
+        'main': {
+          templateUrl: 'page4.html',
+          controller : 'loginsuccess'
+        }
+      }
+    })
+
+    .state('main.page6', {
+      url: '/todayscalorie',
+      views: {
+        'main': {
+          templateUrl: 'page6.html',
+          controller : 'todayscalorieCtrl'
+        }
+      }
+    })
+
+.state('main.page7', {
+      url: '/detailcalories/:date',
+      views: {
+        'main': {
+          templateUrl: 'page7.html',
+          controller : 'getCaloriesCtrl'
+        }
+      }
+    })
+    
     ;
 
   // if none of the above states are matched, use this as the fallback
