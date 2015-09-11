@@ -33,7 +33,8 @@
           opacity: 0.80;
       }
     </style>
-
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>  
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <link href="css/ionic.app.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -46,6 +47,8 @@
 
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-messages.min.js"></script>
+    
     
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
@@ -58,9 +61,8 @@
         
     </div>
 </div>
+
 <script id="page1.html" type="text/ng-template">
-
-
     
        <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
        
@@ -73,42 +75,47 @@
 
 </div>
 </script>
+
 <script id="page2.html" type="text/ng-template">
-<ion-view title="Login" class="calorybg">
+  <ion-view title="Login" class="calorybg">
     <ion-content padding="true" class="">
-    <div style="text-align:center">
-    <img src="img/logo.png"  style="margin-top:5%; height : 200px; "/>
-    </div>
-        <form>
-            <ion-list>
-                <label class="item item-input trans">
-                    <span class="input-label trans">Mobile</span>
-                    <input type="text" placeholder="" ng-model="loginData.mobile">
-                </label>
-                   <br/>
-                <label class="item item-input trans">
-                    <span class="input-label trans">Password</span>
-                    <input type="password" placeholder="" ng-model="loginData.password">
-                </label>
-            </ion-list>
-            <div class="spacer" style="height: 40px;"></div>
-            <button class="button button-energized button-block trans" ng-click="login()">Log in</button>
-            <a href="#/forgotpassword" class="button button-energized button-clear button-block ">Forgot password ??</a>
-            <div style="text-align:center;">OR<div>
-            <a href="#/signup" class="button button-energized button-clear button-block ">create an account</a>
-        </form>
+      <div style="text-align:center">
+        <img src="img/logo.png"  style="margin-top:5%; height : 200px; "/>
+      </div>
+      <form id="loginForm" name="loginForm"> 
+        <ion-list>
+          <label class="item item-input trans" >
+            <input type="number" id="mobile" name="mobile" placeholder="Mobile" ng-model="loginData.mobile">
+          </label>
+          <br/>
+          
+          <label class="item item-input trans" >
+            <input type="password" id="password" name="password" placeholder="Password" ng-model="loginData.password">
+          </label>
+        </ion-list>
+            
+        <div class="spacer" style="height: 40px;"></div>
+        <button class="button button-energized button-block trans" ng-click="login()">Log in</button>
+        <a href="#/forgotpassword" class="button button-energized button-clear button-block " style="color:white;font-weight:bold">Forgot password?</a>
+        <div style="text-align:center;color:white;font-weight:bold">OR<div>
+        <a href="#/signup" class="button button-energized button-clear button-block " style="color:white;font-weight:bold">Create an account</a>
+      </form>
     </ion-content>
-</ion-view></script>
+  </ion-view>
+</script>
+
 <script id="page3.html" type="text/ng-template">
-<ion-view title="<img src='img/logo.png'  style=' height : 75px; '/>">
-<ion-nav-bar class="bar-energized" style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
-            <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
-  
-        </ion-nav-bar>
+ <ion-header-bar align-title="center" class="bar-energized" style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
+<div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px;" ng-click="myGoBack()"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
     <ion-content padding="true" scroll="true" class="has-header">
         <form>
             <ion-list>
-                <label class="item item-input trans">
+                <label class="item item-input ">
                     <span class="input-label">Name</span>
                     <input type="text" placeholder="ABCD FULLNAME" ng-model="signup.fullname">
                 </label>
@@ -164,11 +171,11 @@
                 <ion-toggle toggle-class="toggle-positive" ng-model="signup.teeto">Teeto</ion-toggle>
                 <label class="item item-input">
                     <span class="input-label">Mobile</span>
-                    <input type="text" placeholder="1234567890" ng-model="signup.mobile">
+                    <input type="number" placeholder="1234567890" ng-model="signup.mobile">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">E-mail</span>
-                    <input type="email" placeholder="abc@abc.com" ng-model="signup.email">
+                    <input type="text" placeholder="abc@abc.com" ng-model="signup.email">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Street 1</span>
@@ -186,7 +193,7 @@
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Pin</span>
-                    <input type="text" placeholder="" ng-model="signup.pin">
+                    <input type="number" placeholder="" ng-model="signup.pin">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Doctor's Name</span>
@@ -202,13 +209,13 @@
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Confirm Password</span>
-                    <input type="password" placeholder="*************" ng-model="signup.repassword">
+                    <input type="password" placeholder="*************" ng-model="signup.cpassword">
                 </label>
             </ion-list>
             <button class="button button-energized button-block" ng-click="CreateUser()">Sign up</button>
         </form>
     </ion-content>
-</ion-view></script>
+</script>
 
 <script id="mainContainer.html" type="text/ng-template">
 
@@ -220,12 +227,13 @@
 
         <ion-side-menu side="left">
             
-            <ion-content has-header="true">
+            <ion-content has-header="true" style="background-color:#182d60;color:white;">
                 <ul class="list">
-                    <a ui-sref="main.page4" class="item" ng-click="toggleMenu()">Home</a>
-                    <a ui-sref="main.page6" class="item" ng-click="toggleMenu()">Add Today Calorie</a>
-                    <a ui-sref="" class="item" ng-click="toggleMenu()">My Profile</a>
-                    <a ui-sref="page2" class="item" ng-click="toggleMenu()">Log Out</a>
+                    <a menu-close ui-sref="main.page4" class="item" ng-click="" style="background-color:#182d60;color:white;border:0px">Home</a>
+                    <a menu-close ui-sref="main.page6" class="item" ng-click="toggleLeft()" style="background-color:#182d60;color:white;border:0px">Add Today Calorie</a>
+                    <a menu-close ui-sref="main.page11" class="item" ng-click="" style="background-color:#182d60;color:white;border:0px">Edit Profile</a>
+                    <a menu-close ui-sref="main.page10" class="item" ng-click="" style="background-color:#182d60;color:white;border:0px">Change Password</a>
+                    <a menu-close ui-sref="page2" class="item" ng-click="logOut()" style="background-color:#182d60;color:white;border:0px">Log Out</a>
                 </ul>
             </ion-content>
         </ion-side-menu>
@@ -236,33 +244,32 @@
 </script>
 
 <script id="page4.html" type="text/ng-template">
-  <ion-view >
-    <ion-content >
-      <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
-        <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
-        <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
-      
+
+<ion-header-bar align-title="center" class="bar-energized" >
+<div class="buttons">
+   <button  menu-toggle="left" class="button button-icon icon ion-navicon mymenu" style="z-index:9999; padding-top:10px; padding-left:15px;"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
             <div>
-              <h4>Welcome</h4> <h3> {{myservice.name}} </h3>    
+              <h4>Welcome, <span>{{name}}</span> </h3>    
             </div>
             <ion-list>
-              <ion-item ng-repeat="calorie in calorielists ">
-                <a class="item item-icon-right" href="#">{{calorie.date}}  {{calorie.calories}} calories<i class="icon ion-chevron-right"></i></a>
+              <ion-item ng-repeat="calorie in calorielists" style="border:0px!important; background-color:#F8F8F8;" >
+                <a class="item item-icon-right" href="#/main/detailcalories/{{calorie.date}}" style="background-color:#F8F8F8;" ><div style="float:left;width:70%; font-size:18px;color:#5B7E95!important;font-weight:bold">{{calorie.date | formatDate}} </div> <div style="float:left;width:30%;font-size:15px;color:#5B7E95!important;"> {{calorie.calories}} calories</div><i class="icon ion-chevron-right" style="color:#5B7E95!important;"></i></a>
               </ion-item>
             </ion-list>
-            <a href="#/main/todayscalorie" class="button button-energized button-block trans">Enter Today Calorie</a>
-          </div>
-        </div>
+            <a href="#/main/todayscalorie" class="button button-energized button-block">Enter Today Calorie</a>
+         
       </ion-content>
-    </ion-view>
+
 
        
 </script>
 
 <script id="page5.html" type="text/ng-template">
-
-
-    
        <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
        
     <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
@@ -270,82 +277,321 @@
      <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
      <form>
         <label class="item item-input trans">
-            <span class="input-label">E-mail</span>
-           <input  id= "forgetemail" type="email" ng-model="forgetpassword.email" placeholder="abc@abc.com">
+            <span class="input-label trans">E-mail</span>
+           <input  id= "forgetemail" type="text" ng-model="forgetpassword.email" placeholder="abc@abc.com">
         </label>
-        <button class="button button-energized button-block" ng-click="forgetPassword()">Submit</button>
+        <button class="button button-energized button-block trans" ng-click="forgetPassword()">Submit</button>
       </form>
     </div>
 </div>
 </script>
 
 <script id="page6.html" type="text/ng-template">
+ <ion-header-bar align-title="center" class="bar-energized"  style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
+<div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px;" ng-click="myGoBack()"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
 
-      <ion-view >
-    <ion-content >
-      <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
-       
-    <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
-    
-     <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
-     <h1>Enter Calories</h1>
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+     <h4>Enter Calories</h4>
      <form>
         <label class="item item-input" name="Date">
           <span class="input-label">Date</span>
           <input type="date" ng-model="todayscalorie.date">
         </label>
+        <div id="TextBoxesGroup">
+          <label class="item item-select" name="Events">
+            <span class="input-label">Events</span>
+            <select ng-model="todayscalorie.event" ng-change="getDishes()">
+              <option ng-value="1">Break Fast</option>
+              <option ng-value="2">Lunch</option>
+              <option ng-value="3">Dinner</option>
+              <option ng-value="4">Beverages</option>
+              <option ng-value="5">Snacks</option>
+            </select>
+          </label>
         
-        <label class="item item-select" name="Events">
-          <span class="input-label">Events</span>
-          <select ng-model="todayscalorie.event" ng-change="getDishes()">
-            <option ng-value="1">Break Fast</option>
-            <option ng-value="2">Lunch</option>
-            <option ng-value="3">Dinner</option>
-          </select>
-        </label>
-        
-        <label class="item item-select" name="Select Dish">
-          <span class="input-label">Select Dish</span>
-          <select id="CitySelector" ng-model="todayscalorie.dish">
-            <option ng-repeat="dish in dishes" value="{{dish.id}}">{{dish.name}}</option>
+          <label class="item item-select" name="Select Dish">
+            <span class="input-label">Select Dish</span>
+            <select id="CitySelector" ng-model="todayscalorie.dish">
+              <option ng-repeat="dish in dishes" value="{{dish.id}}">{{dish.name}}</option>
+            </select>
+          </label>
+
+          <label class="item item-select" name="Select Quantity">
+          <span class="input-label">Select Quantity</span>
+          <select ng-model="todayscalorie.quantity">
+            <option ng-value="1">1</option>
+            <option ng-value="2">2</option>
+            <option ng-value="3">3</option>
+            <option ng-value="4">4</option>
+            <option ng-value="5">5</option>
           </select>
         </label>
 
+        </div>
+        <button class="button button-icon icon ion-plus-round"  onclick="addDish();"></button>
         <button class="button button-energized button-block" ng-click="AddCalorie()">Submit</button>
       </form>
-    </div>
-</div>
+
       </ion-content>
-    </ion-view>
-    
-       
+
+</script>
+
+<script>
+function addDish(){
+
+  var newTextBoxDiv = $(document.createElement('div1'))
+        .attr("id", 'TextBoxDiv').attr("ng-controller", 'todayscalorieCtrl');
+
+  var newTextBoxDiv1 = $(document.createElement('div1'))
+        .attr("id", 'TextBoxDiv1');
+
+  newTextBoxDiv.after().html('<label class="item item-select" name="Events"><span class="input-label">Events</span><select ng-model="todayscalorie.event" ng-change="getDishes()" onchange="test(this.value)">' +
+        '<option>Select Event</option><option ng-value="1" value="1">Break Fast</option><option ng-value="2" value="2">Lunch</option><option ng-value="3" value="3">Dinner</option></select></label>');
+ 
+ newTextBoxDiv1.after().html('<label class="item item-select" name="Select Dish"><span class="input-label">Select Dish</span><select id="dishSelector" ng-model="todayscalorie.dish">' +
+        '<option ng-repeat="dish in dishes" value="{{dish.id}}">Select Dish</option></select></label><br /><br />');
+
+  newTextBoxDiv.appendTo("#TextBoxesGroup");
+  newTextBoxDiv1.appendTo("#TextBoxesGroup");
+     }
+
+     function test(id){
+      //alert(id);  
+      $.ajax({
+        url: "http://calorie.textilemarketresearch.com/services/getDishes?cat="+id,
+        success:function(data){
+          //alert(data[1].name);
+          var select = $("#dishSelector");
+          select.children().remove();
+          $.each(data,function(index,item){
+            $("#dishSelector").append($('<option></option>').val(item.name).html(item.name));
+          });
+          //var select = $("#dishSelector");
+          //$("#dishSelector").append($('<option></option>').val(data[1].name).html(data[1].name));
+          /*if (data.name) {
+                  $('#dishSelector').append(
+                            $('<option></option>').val("please select").html("Please select")
+                        );                 
+                    $.each(data.name,function(index, item) {
+                      
+                      $('#dishSelector').append(
+                                $('<option></option>').val(item).html(item)
+                            );                            
+                    });
+                }*/
+        } 
+        /*success: function(result){
+        alert(result);
+        }
+      });*/
+    });
+     }
+
 </script>
 
 <script id="page7.html" type="text/ng-template"> 
-   <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
-     <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
-          <p>Calories Level :
-            <strong>Medium</strong>
-          </p>
-          <h1 style="">1-03-2015</h1>
+   <ion-header-bar align-title="center" class="bar-energized"  style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
+<div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px;" ng-click="myGoBack()"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+          <div style="float:left;width:70%; font-size:18px;color:#5B7E95!important;font-weight:bold"> <h4><p>Calories Level :
+            <span>Medium</span></h4>
+          </p></div>
+          <div style="width:30%;float:left" class="button-energized" ng-model="date"><button class="button button-energized button-block" >{{date | date : 'mediumDate'}}</button></div>
         <div style="width: 300px; height: 51px;" class="spacer"></div>
         <div style="">
-            <table style="width:100%" >
-                <tbody ng-repeat="caloriedetail in caloriesdetails" >
+            <tbody ng-repeat="caloriedetail in caloriesdetails" >
                     <tr>
-                        <td>{{caloriedetail.dish_id | checkDish}}</td>
-                        <td>{{caloriedetail.name}}</td>
-                        <td>{{caloriedetail.calories}}calories</td>
+                    <th style="padding: 5px;">Event</th>
+                    <th style="padding: 5px;">Dish Name</th>
+                    <th style="padding: 5px;">Calories</th>
+                    <th style="padding: 5px;">Qty</th>
+                    <th style="padding: 5px;">Total</th>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.event | checkEvent}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.name}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.calories}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.qty}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.calories * caloriedetail.qty}}</td>
                     </tr>
                 </tbody>
             </table>
+                  
+            <!--<ion-list>
+                  
+                <ion-item ng-repeat="caloriedetail in caloriesdetails" >
+                        <div style="width:20%;float:left;">{{caloriedetail.event | checkEvent}}</div>
+                        <div style="width:20%;float:left;">{{caloriedetail.name}}</div>
+                        <div style="width:20%;float:left;">{{caloriedetail.calories}} calories</div>
+                        <div style="width:20%;float:left;">{{caloriedetail.qty}} quantity</div>
+                        <div style="width:20%;float:left;">{{caloriedetail.qty}} quantity</div>
+                </ion-item>
+            </ion-list> -->
         </div>
         <div style="width: 300px; height: 54px;" class="spacer"></div>
-        <h3 style="">Total Calories : 4000</h3>
-    </div>
-</div>
+        <button class="button button-energized button-block" >Total Calories : {{caloriesdetails | sumOfValue:'calories'}}</button>
+    </ion-content>
+
 </script>
 
+<script id="page8.html" type="text/ng-template">
+  <ion-view title="Login" class="calorybg">
+    <ion-content padding="true" class="">
+        <div style="">
+            <p>Some friendly
+                <strong>markdown</strong>
+                about application details here the description will come.
+            </p>
+        </div>
+        <div style="width: 300px; height: 344px;" class="spacer"></div>
+        <button class="button button-energized button-block trans" ng-click="appLaunch()">Next</button>
+        </ion-content>
+  </ion-view>
+</script>
+
+<script id="page10.html" type="text/ng-template">
+ <ion-header-bar align-title="center" class="bar-energized"  style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
+<div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px;" ng-click="myGoBack()"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+     <h4>Change Password</h4>
+     <form>
+        <label class="item item-input trans">
+            <span class="input-label trans">E-mail</span>
+           <input  id= "changeemail" disabled type="email" ng-model="changepassword.email" placeholder="abc@abc.com">
+        </label>
+         <label class="item item-input trans">
+            <span class="input-label trans">Old password</span>
+           <input  id= "changeoldpass" type="password" ng-model="changepassword.oldPass" placeholder="*****">
+        </label>
+         <label class="item item-input trans">
+            <span class="input-label trans">New password</span>
+           <input  id= "changenewpass" type="password" ng-model="changepassword.newPass" placeholder="*****">
+        </label>
+        <button class="button button-energized button-block" ng-click="changePassword()">Submit</button>
+      </form>
+    </ion-content>
+</script>
+
+<script id="page11.html" type="text/ng-template">
+ <ion-header-bar align-title="center" class="bar-energized"  style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
+<div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px;" ng-click="myGoBack()"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+        <form>
+            <ion-list>
+                <label class="item item-input ">
+                    <span class="input-label">Name</span>
+                    <input type="text" placeholder="ABCD FULLNAME" ng-model="edit.fullname">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">DOB</span>
+                    <input type="date" placeholder="Date of Birth" ng-model="edit.dob">
+                </label>
+                <label class="item item-select" name="Gender">
+                    <span class="input-label">Gender</span>
+                    <select ng-model="edit.gender">
+                      <option ng-value="1">Male</option>
+                      <option ng-value="2">Female</option>
+                    </select>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Height-Feet</span>
+                    <input type="text" placeholder="Feets" ng-model="edit.heightfeet">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Height-Inches</span>
+                    <input type="text" placeholder="Inches" ng-model="edit.heightinches">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Weight</span>
+                    <input type="text" placeholder="50 KG" ng-model="edit.weight">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Waistline</span>
+                    <input type="text" placeholder="40 cms" ng-model="edit.waistline">
+                </label>
+                <label class="item item-select" name="Drinker">
+                    <span class="input-label">Drinker</span>
+                    <select ng-model="edit.drinker">
+                      <option ng-value="1">Everyday</option>
+                      <option ng-value="2">Once a week</option>
+                      <option ng-value="3">Once a fortnight</option>
+                      <option ng-value="4">Once a month</option>
+                    </select>
+                </label>
+                <label class="item item-select" name="Married">
+                    <span class="input-label">Married</span>
+                    <select ng-model="edit.married">
+                      <option ng-value="1">Single</option>
+                      <option ng-value="2">Married</option>
+                      <option ng-value="3">Divorced</option>
+                      <option ng-value="4">Widow</option>
+                    </select>
+                </label>
+                <ion-toggle toggle-class="toggle-assertive"ng-model="edit.daibetic" >Diabetic</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="edit.hypertensive">Hypertensive</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="edit.kidney">Kidney problem</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="edit.smoker">Smoker</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="edit.teeto">Teeto</ion-toggle>
+                <label class="item item-input">
+                    <span class="input-label">Mobile</span>
+                    <input type="text" placeholder="1234567890" ng-model="edit.mobile">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">E-mail</span>
+                    <input type="email" placeholder="abc@abc.com" ng-model="edit.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Street 1</span>
+                    <input type="text" placeholder="" ng-model="edit.street1">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Street 2</span>
+                    <input type="text" placeholder="" ng-model="edit.street2">
+                </label>
+                <label class="item item-select" name="Cities">
+                    <span class="input-label">City</span>
+                    <select id="CitySelector" ng-model="edit.city">
+                      <option ng-repeat="city in cities" value="{{city.city_id}}">{{city.city_name}}</option>
+                    </select>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Pin</span>
+                    <input type="text" placeholder="" ng-model="edit.pin">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Doctor Name</span>
+                    <input type="text" placeholder="" ng-model="edit.drname">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Doctor Place</span>
+                    <input type="text" placeholder="" ng-model="edit.drplace">
+                </label>
+            </ion-list>
+            <button class="button button-energized button-block" ng-click="editUser()">Save Profile</button>
+        </form>
+    </ion-content>
+</script>
+
+</script>
 <style>
     .button-calorie
     {
@@ -353,6 +599,29 @@
         background-color: #182d60;
         opacity: 0.8;
     }
+    h4{
+        color:#182d60;
+        text-align: center;
+        font-size: 24px;
+    }
+    h4 span{
+        color:#D83426;
+    }
+    body{
+        color:#5B7E95;
+    }
+    .item.active, .item.activated, .item-complex.active .item-content, .item-complex.activated .item-content, .item .item-content.active, .item .item-content.activated
+    {
+        color:#5B7E95!important;
+    }
+    .activer{
+        background-color:#D83426!important;
+    }
 </style>
   </body>
 </html>
+
+
+
+
+

@@ -1,18 +1,105 @@
 angular.module('starter.controllers', [])
 
+.run(function($rootScope,$state,$ionicHistory) {
+
+      $rootScope.appLaunch = function (){
+
+           window.localStorage.setItem("applaunch",1);
+           $rootScope.goToState('page1');
+      } 
+$rootScope.myGoBack  = function() {
+    $ionicHistory.goBack();
+  }
+      $rootScope.logOut = function() {
+        var txt;
+        var r = confirm("Are you sure you want to logout?");
+        if (r == true) {
+            console.log("You pressed OK!");
+            window.localStorage.removeItem("clientDetails");    
+        } else {
+            console.log("You pressed cancel!");
+        }
+      };
+
+      $rootScope.goToState = function (statename) {
+        $state.go(''+statename+'');
+      }
+})
+
 .service('myservice', function() {
       this.setName = function(data){
               this.name = data.details.name;
               this.id = data.details.id;
 
       }
-    })
+})
 
 .controller('MainController', [ '$scope', function($scope) {
   $scope.toggleMenu = function() {
     $scope.sideMenuController.toggleLeft();
-  }
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+  
+  
 }])  
+
+.controller('changepasswordCtrl', function($scope,$http,$state) {
+    $scope.changepassword={}
+    var clientdetails = JSON.parse(window.localStorage.getItem("clientDetails"));
+    $scope.changepassword.email = clientdetails.email.trim();
+    $scope.changePassword = function(){
+
+      var email = clientdetails.email.trim();
+      var password =$scope.changepassword.oldPass;
+      var newpassword = $scope.changepassword.newPass;
+
+      console.log(email + " " + password +' '+ newpassword);  
+
+      if( password == null || newpassword == null){
+          alert("Password or new password cannot be null");
+          return ;
+      }
+      else if (password == "" || newpassword == ""){
+          alert("Password or new password cannot be null");
+          return ;
+      }
+      else if ( password == newpassword ){
+          alert("Old Password and New Password cannot be same,Please enter different password");
+          return;
+      }
+      else{
+        var req = {
+            method: 'POST',
+            url: 'http://calorie.textilemarketresearch.com/services/changePassword',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: "email="+email+"&password="+password+"&newpassword="+newpassword+"" 
+            //data:"email=anuj1@gmail.com&password=lola&newpassword=loli"
+        }
+        $http(req).success(function(data){
+          if(data.status == 1){
+            alert(data.message);
+             document.getElementById("changeoldpass").value = "";
+             document.getElementById("changenewpass").value = "";
+             $scope.changepassword.oldPass = "";
+             $scope.changepassword.newPass = "";
+            //$state.go('page2', data);
+          }
+          else{
+            alert(data.message);
+            document.getElementById("changeoldpass").value = "";
+            document.getElementById("changenewpass").value = "";
+            $scope.changepassword.oldPass = "";
+            $scope.changepassword.newPass = "";
+          }
+        })
+        .error(function(){
+          alert("No response from Server");
+        });
+      }
+    }                        
+}) 
 
 .controller('forgotpassword', function($scope,$http,$state) {
     $scope.forgetpassword={};
@@ -20,6 +107,17 @@ angular.module('starter.controllers', [])
 
     $scope.forgetPassword = function(){
       var email = $scope.forgetpassword.email;
+
+      if(email == null){
+        alert("Email id cant be blank.")
+        return;
+      }
+      else{ 
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+          alert("Email id is not valid");
+          return;
+        }
+
         var req = {
             method: 'POST',
             url: 'http://calorie.textilemarketresearch.com/services/forgotPassword',
@@ -42,19 +140,31 @@ angular.module('starter.controllers', [])
         .error(function(){
           alert("No response from Server");
         });
+      }
     }                        
 })
 
-.controller('getCaloriesCtrl', function($rootScope,$scope,$http, $state, myservice, $ionicLoading) {
-
+.controller('getCaloriesCtrl', function($filter,$rootScope,$scope,$http, $state, myservice, $ionicLoading,$stateParams,$ionicHistory) {
+$scope.myGoBack  = function() {
+    $ionicHistory.goBack();
+  };
    // Form data for the login modal
-
+    //var strdate = $stateParams.date.replace(/\ /g,"T");
+    var d = new Date($stateParams.date);
+    console.log(d);
+    $scope.date =d; 
+    var date= $stateParams.date;  
+    console.log(date);
+    var cd =JSON.parse(window.localStorage.getItem("clientDetails"));
+    console.log(cd.id);
+    var userid = cd.id;
     $ionicLoading.show({
       template: "Loading..."
-    });       
+    });
+    
     var req = {
       method: 'GET',
-      url: 'http://calorie.textilemarketresearch.com/services/detailCalories?userid=31&date=2015-07-27'
+      url: 'http://calorie.textilemarketresearch.com/services/detailCalories?userid='+userid+'&date='+date+''
     }
     $http(req).success(function(data){
         //alert(JSON.stringify(data));
@@ -66,15 +176,19 @@ angular.module('starter.controllers', [])
     }); 
 })
 
-.controller('todayscalorieCtrl', function($http, $scope, $filter, $ionicLoading, $state, myservice) {
-  
+.controller('todayscalorieCtrl', function($http, $scope, $filter, $ionicLoading,$ionicSideMenuDelegate, $ionicHistory,$state, myservice) {
+   $scope.myGoBack  = function() {
+    $ionicHistory.goBack();
+  };
   $scope.leftButtons = [{
             type: 'button-icon icon ion-navicon',
             tap: function(e) {
                 $scope.toggleMenu();
             }
         }];
-
+$scope.toggleLeft = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
   $scope.todayscalorie = {};
   
     
@@ -117,28 +231,41 @@ angular.module('starter.controllers', [])
     var dt = $filter('date')($scope.todayscalorie.date,'yyyy-MM-dd'); // formats the date in yyyy-MM-dd format
     var eid = $scope.todayscalorie.event;
     var did = $scope.todayscalorie.dish;
+    var qid = $scope.todayscalorie.quantity;
+    var uid = myservice.id;
     //alert(JSON.stringify($scope.todayscalorie));
 
-    var req = {
+    if(dt == null){
+      alert("Please select date, it can't be blank.");
+    }else if(eid == null){
+      alert("Please select event, it can't be blank.");
+    }else if(did == null){
+      alert("Please select dish, it can't be blank.");
+    }else if(qid == null){
+      alert("Please select quantity, it can't be blank.")
+    }
+    else{
+      alert(uid);
+      alert(qid);
+      var req = {
         method: 'POST',
         url: 'http://calorie.textilemarketresearch.com/services/addCalories',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data: "user_id="+uid+"&event_id="+eid+"&date="+dt+"&dish_id="+did+""              
-    }
+        data: "user_id="+uid+"&event_id="+eid+"&date="+dt+"&dish_id="+did+"&qty="+qid+""              
+      }
     
-    $http(req).success(function(data){
-        
+      $http(req).success(function(data){
           //alert(JSON.stringify(data))
           //alert(data.message);
           alert("Today's Calorie added.")
-           $state.go('page4', data);
-    })
-    
-    .error(function(){
-      alert("No response from Server");
-    });
+          $state.go('main.page4', data);
+      })
+      .error(function(){
+        alert("No response from Server");
+      });
+    }
   }
 
   
@@ -200,20 +327,330 @@ angular.module('starter.controllers', [])
     var drname = $scope.signup.drname;
     var drplace = $scope.signup.drplace;
     var password = $scope.signup.password;
+    var cpassword = $scope.signup.cpassword;
     //alert(JSON.stringify($scope.signup));
 
-    var req = {
+    if(fullname == null){
+      alert("Please enter Name, it can't be blank");
+    }else if(dob == null){
+      alert("Please enter Birthdate, it can't be blank");
+    }else if(gender == null){
+      alert("Please specify your Gender");
+    }else if(married == null){
+      alert("Please select your Marital Status.");
+    }else if(drinker == null){
+      alert("Please select your Drink Status");
+    }else if(hfeet == null){
+      alert("Please enter your Height in Feet, it can't be blank");
+    }else if(hinch == null){
+      alert("Please enter your Height in Inch, it can't be blank");
+    }else if(weight == null){
+      alert("Please enter your Weight, it can't be blank");
+    }else if(waist == null){
+      alert("Please enter your Waist, it can't be blank");
+    }else if(mobile == null){
+      alert("Please enter Mobile Number, it can't be blank")
+    }else if(email == null){
+      alert("Please enter Email, it can't be blank")
+    }else if(street1 == null){
+      alert("Please enter your Street name, it can't be blank");
+    }else if(city == null){
+      alert("Please select your city");
+    }else if(pin == null){
+      alert("Please enter your Pin, it can't be blank");
+    }else if(drname == null){
+      alert("Please enter your Doctor Name, it can't be blank");
+    }else if(drplace == null){
+      alert("Please enter your Doctor Place, it can't be blank");
+    }else if(password == null){
+      alert("Please enter your Password, it can't be blank");
+    }else if(cpassword == null){
+      alert("Please enter your Confirm Password, it can't be blank");
+    }
+    else{
+      if(mobile.toString().length != 10){
+        alert("Mobile must be 10 digits.");
+      }
+      if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+          alert("Email id is not valid");
+      }
+      if(pin.toString().length != 6){
+        alert("Pincode must be 6 digits");
+      }
+      if(cpassword != password){
+        alert("Chnage password did not match the password");
+      }
+    
+      var req = {
         method: 'POST',
         url: 'http://calorie.textilemarketresearch.com/services/saveUsers',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         data: "mobile="+mobile+"&password="+password+"&name="+fullname+"&dob="+dob+"&gender="+gender+"&married="+married+"&hfeet="+hfeet+"&hinch="+hinch+"&weight="+weight+"&waist="+waist+"&diabetes="+diabetes+"&hypertension="+hypertension+"&kidney="+kidney+"&smoker="+smoker+"&drinker="+drinker+"&teeto="+teeto+"&mobile="+mobile+"&email="+email+"&street1="+street1+"&street2="+street2+"&city_id="+city+"&pin="+pin+"&doctor_name="+drname+"&doctor_place="+drplace+""              
+      }
+    
+      $http(req).success(function(data){
+        if(data.status == 1){
+          //alert(JSON.stringify(data))
+          alert(data.message);
+        }
+        else{
+          alert(data.message);
+        }
+      })
+    
+      .error(function(){
+        alert("No response from Server");
+      });
+    }
+  } 
+})
+
+.controller('loginsuccess',function ($rootScope, $scope, $http,$ionicLoading) {
+
+  $scope.$on('$ionicView.enter', function(e) {    
+    //console.log("called");
+      $scope.leftButtons = [{
+            type: 'button-icon icon ion-navicon',
+            tap: function(e) {
+                $scope.toggleMenu();
+            }
+        }];
+  
+      var clientdetails = JSON.parse(window.localStorage.getItem("clientDetails"));
+      console.log(clientdetails);
+      $ionicLoading.show({
+        template: "Loading..."
+      });
+
+      var uid = clientdetails.id;
+      $scope.name = clientdetails.name;
+      //alert(uid);
+      $scope.calorielists = {};
+      var req = {
+      method: 'POST',
+      url: ' http://calorie.textilemarketresearch.com/services/listCalories?userid='+uid+''  
+      }
+      $http(req).success(function(data){
+        //console.log(data.status);
+        if(data.status == 0 || data.status == " " ){
+            $scope.message = data.message;
+            $ionicLoading.hide();
+        }
+        else{
+          console.log(JSON.stringify(data));
+          $scope.calorielists = data;
+          $ionicLoading.hide();
+        }
+      })
+    .error(function(){
+      alert("No response from Server");
+      $ionicLoading.hide();
+    });
+
+  });
+})
+
+.controller('loginCtrl', function($rootScope,$scope,$http, $state, myservice, $ionicLoading) {
+
+  $scope.$on('$ionicView.beforeEnter', function($state) {
+          var clientdetails = window.localStorage.getItem("clientDetails");
+          if(clientdetails == null){
+             //alert("Please Log in to continue");
+             console.log("please login to continue");
+          }
+          else{
+            console.log("logged in still");
+            $rootScope.goToState('main.page4');
+          }
+  });
+   // Form data for the login modal
+  $scope.loginData = {};
+  $scope.clientdetails = {};
+  
+  $scope.login = function() {
+    $ionicLoading.show({
+      template: "Loading..."
+    });    
+    var mobile = $scope.loginData.mobile;
+    var password =$scope.loginData.password;
+
+    if( mobile == null  || password == null){
+      alert("mobile or password should not be null");
+      $ionicLoading.hide();
+      return ;
+    }
+    else{
+      if(mobile.toString().length != 10){
+        alert("Mobile must be 10 digits.");
+        $ionicLoading.hide();
+        return;
+      }
+    /*var data = $.param({
+      json: JSON.stringify({
+        name: $scope.newName
+      })
+    });*/
+    
+      $http.defaults.useXDomain = true;
+      var req = {
+        method: 'POST',
+        url: 'http://calorie.textilemarketresearch.com/services/loginUser',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: "mobile="+mobile+"&password="+password+""
+      }
+      $http(req).success(function(data){
+        if(data.status == 1){
+          //alert(JSON.stringify(data));
+          //alert(data.details.name);
+          var clientDetails = JSON.stringify(data.details);
+          $scope.name = data.details.name;
+          myservice.setName(data);
+          //alert(JSON.stringify($scope.name));
+          window.localStorage.setItem("clientDetails",clientDetails);
+          $ionicLoading.hide();
+          $state.go('main.page4', data);
+        }
+        else{
+          $ionicLoading.hide();
+          alert("Wrong username/password");
+
+        }
+      })
+      .error(function(){
+        alert("No response from Server");
+      });
+    }
+  } 
+})
+
+// Setup the filter
+.filter('checkDish', function() {
+
+  // Create the return function
+  // set the required parameter name to **number**
+  return function(dish) {
+
+    // Ensure that the passed in data is a number
+   /* if(isNaN(dish) || dish < 1) {
+      // If the data is not a number or is less than one (thus not having a cardinal value) return it unmodified.
+      return dish;
+    } 
+    else {*/
+      //console.log(dish);
+      // If the data we are applying the filter to is a number, perform the actions to check it's ordinal suffix and apply it.
+      if(dish == 1) {
+        return 'Break Fast';
+      } else if(dish == 2) {
+        return 'Lunch';
+      } else if (dish == 3) {
+        return 'Dinner';
+//      } 
+    }
+  }
+})
+
+.controller('editProfileCtrl', function($http,$scope,$filter,$ionicLoading) {
+
+  CheckTrueFlase = function (data){
+        if (data == 1){
+            return true;
+        } 
+        else{
+          return false;
+        }
+
+    };
+  $scope.edit = {};
+  var clientdetails = JSON.parse(window.localStorage.getItem("clientDetails"));
+  console.log(JSON.stringify(clientdetails));
+
+    $scope.edit.fullname = clientdetails.name;
+    $scope.edit.dob = new Date(clientdetails.dob);
+    $scope.edit.heightfeet = clientdetails.hfeet;
+    $scope.edit.heightinches =clientdetails.hinch;
+    $scope.edit.weight =clientdetails.weight;
+    $scope.edit.waistline =clientdetails.waist; 
+    $scope.edit.daibetic = CheckTrueFlase(clientdetails.diabetes);
+    $scope.edit.hypertensive = CheckTrueFlase(clientdetails.hypertension);
+    $scope.edit.kidney = CheckTrueFlase(clientdetails.kidney);
+    $scope.edit.smoker = CheckTrueFlase(clientdetails.smoker);
+    $scope.edit.teeto = CheckTrueFlase(clientdetails.teeto);
+    $scope.edit.mobile = clientdetails.mobile;
+    $scope.edit.email = clientdetails.email.trim();
+    $scope.edit.street1 =clientdetails.street1;
+    $scope.edit.street2 =clientdetails.street2;
+    $scope.edit.city =clientdetails.city_id;
+    $scope.edit.pin =clientdetails.pin;
+    $scope.edit.drname = clientdetails.doctor_name;
+    $scope.edit.drplace =clientdetails.doctor_place;
+    
+    
+ 
+    $ionicLoading.show({
+      template: "Loading..."
+    });
+  
+  var req = {
+      method: 'GET',
+      url: 'http://calorie.textilemarketresearch.com/services/getAllCities'
+    }
+    $http(req).success(function(data){
+      //alert(JSON.stringify(data));
+      $scope.cities = data;
+      $ionicLoading.hide();
+    })
+    .error(function(){
+      alert("No response from Server");
+      $ionicLoading.hide();
+    });
+
+    
+
+  $scope.editUser = function(){
+    
+    var fullname = $scope.edit.fullname;
+    var dob = $filter('date')($scope.edit.dob,'yyyy-MM-dd'); // formats the date in yyyy-MM-dd format
+    var gender = $scope.edit.gender;
+    var married = $scope.edit.married;
+    var drinker = $scope.edit.drinker;
+    var hfeet = $scope.edit.heightfeet;
+    var hinch = $scope.edit.heightinches;
+    var weight = $scope.edit.weight;
+    var waist = $scope.edit.waistline;
+    var diabetes = CheckTrueFlase($scope.edit.daibetic);
+    var hypertension = CheckTrueFlase($scope.edit.hypertensive);
+    var kidney = CheckTrueFlase($scope.edit.kidney);
+    var smoker = CheckTrueFlase($scope.edit.smoker);
+    var teeto = CheckTrueFlase($scope.edit.teeto);
+    var mobile = $scope.edit.mobile;
+    var email = $scope.edit.email;
+    var street1 = $scope.edit.street1;
+    var street2 = $scope.edit.street2;
+    var city = $scope.edit.city;
+    var pin = $scope.edit.pin;
+    var drname = $scope.edit.drname;
+    var drplace = $scope.edit.drplace;
+    //alert(JSON.stringify($scope.edit));
+    
+    var req = {
+        method: 'POST',
+        url: 'http://calorie.textilemarketresearch.com/services/editUsers',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: "mobile="+mobile+"&name="+fullname+"&dob="+dob+"&gender="+gender+"&married="+married+"&hfeet="+hfeet+"&hinch="+hinch+"&weight="+weight+"&waist="+waist+"&diabetes="+diabetes+"&hypertension="+hypertension+"&kidney="+kidney+"&smoker="+smoker+"&drinker="+drinker+"&teeto="+teeto+"&mobile="+mobile+"&email="+email+"&street1="+street1+"&street2="+street2+"&city_id="+city+"&pin="+pin+"&doctor_name="+drname+"&doctor_place="+drplace+""              
     }
     
     $http(req).success(function(data){
         if(data.status == 1){
           //alert(JSON.stringify(data))
+          window.localStorage.removeItem("clientDetails");
+          var clientDetails = JSON.stringify(data.details);
+          window.localStorage.setItem("clientDetails",clientDetails);
           alert(data.message);
         }
         else{
@@ -227,89 +664,57 @@ angular.module('starter.controllers', [])
   } 
 })
 
-.controller('loginsuccess',
-    function ($rootScope, $scope, $http, myservice,$ionicLoading) {
-      
-
-      $scope.leftButtons = [{
-            type: 'button-icon icon ion-navicon',
-            tap: function(e) {
-                $scope.toggleMenu();
-            }
-        }];
-  
-
-      $ionicLoading.show({
-      template: "Loading..."
-    });
-
-      $scope.myservice = myservice;
-      var uid = $scope.myservice.id;
-      //alert(uid);
-      $scope.calorielists = {};
-      var req = {
-      method: 'POST',
-      url: ' http://calorie.textilemarketresearch.com/services/listCalories?userid='+uid+''  
+.filter('totalSumPriceQty', function () {
+    return function (data, key1, key2) {        
+        if (data == 'undefined' && key1 == 'undefined' && key2 == 'undefined') {
+            return 0;
+        }
+        var len = 0;
+        for (var o in data) {
+              len++;
+          }
+        var sum = 0;
+        for (var i = 0; i < len; i++) {
+            sum = sum + (parseInt(data[i][key1]) * parseInt(data[i][key2]));
+        }
+        return sum;
     }
-    $http(req).success(function(data){
-      //alert(JSON.stringify(data));
-          $scope.calorielists = data;
-          $ionicLoading.hide();
-    })
-    .error(function(){
-      alert("No response from Server");
-    });
 })
 
-.controller('loginCtrl', function($rootScope,$scope,$http, $state, myservice, $ionicLoading) {
+.filter('formatDate', function($filter) {
 
-   // Form data for the login modal
-  $scope.loginData = {};
-  $scope.clientdetails = {};
-  
-  $scope.login = function() {
-    $ionicLoading.show({
-      template: "Loading..."
-    });    
-    var mobile = $scope.loginData.mobile;
-    var password =$scope.loginData.password;
-    /*var data = $.param({
-      json: JSON.stringify({
-        name: $scope.newName
-      })
-    });*/
-    
-    $http.defaults.useXDomain = true;
-    var req = {
-      method: 'POST',
-      url: 'http://calorie.textilemarketresearch.com/services/loginUser',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data: "mobile="+mobile+"&password="+password+""
+  // Create the return function
+  // set the required parameter name to **number**
+  return function(date) {
+
+    var d = new Date(date);
+     var date1 = $filter('date')(d,'mediumDate');
+    return date1;
+  }
+})
+
+.filter('sumOfValue', function () {
+    return function (data, key) {
+        /*if (typeof (data) === 'undefined' && typeof (key) === 'undefined') {
+            return 0;
+        }*/
+        var sum = 0;
+        if (data == 'undefined' && key == 'undefined') {
+            return 0;
+        }else{
+
+        
+        var len = 0;
+        for (var o in data) {
+              len++;
+          }
+        console.log(data);
+        for (var i = 0; i < len; i++) {
+            sum = sum + parseInt(data[i][key]);
+        }
+
+      }
+        return sum;
     }
-    $http(req).success(function(data){
-      if(data.status == 1){
-        //alert(JSON.stringify(data));
-        //alert(data.details.name);
-        $scope.name = data.details.name;
-        myservice.setName(data);
-        //alert(JSON.stringify($scope.name));
-        $ionicLoading.hide();
-        $state.go('main.page4', data);
-      }
-      else{
-        $ionicLoading.hide();
-        alert("Wrong username/password");
-
-      }
-    })
-    .error(function(){
-      alert("No response from Server");
-    });
-  } 
-
-
-
-
-});
+})
+;

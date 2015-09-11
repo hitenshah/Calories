@@ -17,6 +17,19 @@
     height: 80px!important;
     color:#13234c!important;
       }
+
+      .red{
+        color : #D83426 !important ;
+      }
+
+      .green{
+
+        color : green !important ;
+      }
+
+      .black{
+        color : black !important ;
+      }
       
       .has-header
       {
@@ -33,9 +46,14 @@
           opacity: 0.80;
       }
     </style>
-
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+       
+    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <link href="css/ionic.app.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <script src="cordova.js"></script>
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
 
@@ -43,9 +61,11 @@
     <!-- compiled css output -->
     <link href="css/ionic.app.css" rel="stylesheet">
     <!-- scripts here -->
-
+    
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="js/angular-messages.min.js"></script>
+    
     
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
@@ -58,10 +78,8 @@
         
     </div>
 </div>
+
 <script id="page1.html" type="text/ng-template">
-
-
-    
        <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
        
     <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
@@ -73,42 +91,87 @@
 
 </div>
 </script>
-<script id="page2.html" type="text/ng-template">
-<ion-view title="Login" class="calorybg">
-    <ion-content padding="true" class="">
-    <div style="text-align:center">
-    <img src="img/logo.png"  style="margin-top:5%; height : 200px; "/>
-    </div>
-        <form>
-            <ion-list>
-                <label class="item item-input trans">
-                    <span class="input-label trans">Mobile</span>
-                    <input type="text" placeholder="" ng-model="loginData.mobile">
-                </label>
-                   <br/>
-                <label class="item item-input trans">
-                    <span class="input-label trans">Password</span>
-                    <input type="password" placeholder="" ng-model="loginData.password">
-                </label>
-            </ion-list>
-            <div class="spacer" style="height: 40px;"></div>
-            <button class="button button-energized button-block trans" ng-click="login()">Log in</button>
-            <a href="#/forgotpassword" class="button button-energized button-clear button-block ">Forgot password ??</a>
-            <div style="text-align:center;">OR<div>
-            <a href="#/signup" class="button button-energized button-clear button-block ">create an account</a>
-        </form>
-    </ion-content>
-</ion-view></script>
-<script id="page3.html" type="text/ng-template">
-<ion-view title="<img src='img/logo.png'  style=' height : 75px; '/>">
-<ion-nav-bar class="bar-energized" style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
-            <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
+
+
+<script type="text/javascript">
+
+/*var tags = new Array();
+var tagid = new Array();
+
+$.ajax({
+    url: 'http://calorie.textilemarketresearch.com/services/getAllCities',
+    type: 'POST',
+    success: function (response) {
+      //alert(JSON.stringify(response)); 
+      $.each(response ,function(index,value){
+        tags.push(value.city_name);
+        tagid.push(value.city_id);
+        //console.log(value);
+      });   
+      //tags = response;
+      //alert(tags);
+
+        },
+        error: function () {}
+  });
+
+function hitme(){
   
-        </ion-nav-bar>
+  //var tags = [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ];
+
+  $( ".autocomplete" ).autocomplete({
+        source: function( request, response ) {
+          var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+          response( $.grep( tags, function( item ){
+            $scope.signup.city = item ;
+            return matcher.test( item );
+          }) );
+        }
+      }); 
+} 
+*/</script>
+
+<script id="page2.html" type="text/ng-template">
+  <ion-view title="Login" class="calorybg">
+    <ion-content padding="true" class="">
+      <div style="text-align:center">
+        <img src="img/logo.png"  style="margin-top:5%; height : 200px; "/>
+      </div>
+      <form id="loginForm" name="loginForm"> 
+        <ion-list>
+          <label class="item item-input trans" >
+            <input type="number" id="mobile" name="mobile" placeholder="Mobile" ng-model="loginData.mobile">
+          </label>
+          <br/>
+          
+          <label class="item item-input trans" >
+            <input type="password" id="password" name="password" placeholder="Password" ng-model="loginData.password">
+          </label>
+        </ion-list>
+            
+        <div class="spacer" style="height: 40px;"></div>
+        <button class="button button-energized button-block trans" ng-click="login()">Log in</button>
+        <a href="#/forgotpassword" class="button button-energized button-clear button-block " style="color:white;font-weight:bold">Forgot password?</a>
+        <div style="text-align:center;color:white;font-weight:bold">OR<div>
+        <a href="#/signup" class="button button-energized button-clear button-block " style="color:white;font-weight:bold">Create an account</a>
+      </form>
+    </ion-content>
+
+  </ion-view>
+</script>
+
+<script id="page3.html" type="text/ng-template">
+ <ion-header-bar align-title="center" class="bar-energized" style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
+<div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px;" ng-click="myGoBack()"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
     <ion-content padding="true" scroll="true" class="has-header">
         <form>
             <ion-list>
-                <label class="item item-input trans">
+                <label class="item item-input ">
                     <span class="input-label">Name</span>
                     <input type="text" placeholder="ABCD FULLNAME" ng-model="signup.fullname">
                 </label>
@@ -146,6 +209,7 @@
                       <option ng-value="2">Once a week</option>
                       <option ng-value="3">Once a fortnight</option>
                       <option ng-value="4">Once a month</option>
+                      <option ng-value="5">No</option>
                     </select>
                 </label>
                 <label class="item item-select" name="Married">
@@ -157,18 +221,47 @@
                       <option ng-value="4">Widow</option>
                     </select>
                 </label>
-                <ion-toggle toggle-class="toggle-assertive"ng-model="signup.daibetic" >Diabetic</ion-toggle>
+                <label class="item item-select" name="Diabetic">
+                    <span class="input-label">Diabetic</span>
+                    <select ng-model="signup.daibetic">
+                      <option ng-value="1">Yes</option>
+                      <option ng-value="0">No</option>
+                    </select>
+                </label>
+                 <label class="item item-select" name="Hypertensive">
+                    <span class="input-label">Hypertensive</span>
+                    <select ng-model="signup.hypertensive">
+                      <option ng-value="1">Yes</option>
+                      <option ng-value="0">No</option>
+                    </select>
+                </label>
+                <label class="item item-select" name="Hypertensive">
+                    <span class="input-label">Kidney Problem</span>
+                    <select ng-model="signup.kidney">
+                      <option ng-value="1">Yes</option>
+                      <option ng-value="0">No</option>
+                    </select>
+                </label>
+                <label class="item item-select" name="Smoker">
+                    <span class="input-label">Smoker</span>
+                    <select ng-model="signup.smoker">
+                      <option ng-value="1">Yes</option>
+                      <option ng-value="0">No</option>
+                    </select>
+                </label>
+                
+               <!-- <ion-toggle toggle-class="toggle-assertive"ng-model="signup.daibetic" >Diabetic</ion-toggle>
                 <ion-toggle toggle-class="toggle-positive" ng-model="signup.hypertensive">Hypertensive</ion-toggle>
                 <ion-toggle toggle-class="toggle-positive" ng-model="signup.kidney">Kidney problem</ion-toggle>
                 <ion-toggle toggle-class="toggle-positive" ng-model="signup.smoker">Smoker</ion-toggle>
-                <ion-toggle toggle-class="toggle-positive" ng-model="signup.teeto">Teeto</ion-toggle>
+                <ion-toggle toggle-class="toggle-positive" ng-model="signup.teeto">Teeto</ion-toggle> -->
                 <label class="item item-input">
                     <span class="input-label">Mobile</span>
-                    <input type="text" placeholder="1234567890" ng-model="signup.mobile">
+                    <input type="number" placeholder="1234567890" ng-model="signup.mobile">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">E-mail</span>
-                    <input type="email" placeholder="abc@abc.com" ng-model="signup.email">
+                    <input type="text" placeholder="abc@abc.com" ng-model="signup.email">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Street 1</span>
@@ -178,37 +271,52 @@
                     <span class="input-label">Street 2</span>
                     <input type="text" placeholder="" ng-model="signup.street2">
                 </label>
-                <label class="item item-select" name="Cities">
+                <!--<label class="item item-select" name="Cities">
                     <span class="input-label">City</span>
                     <select id="CitySelector" ng-model="signup.city">
                       <option ng-repeat="city in cities" value="{{city.city_id}}">{{city.city_name}}</option>
                     </select>
+                </label> -->
+                
+                <label class="item item-input" name="Cities">
+                  <span class="input-label">City</span>
+                  <input type="text" id="cityName" class="autocomplete" ng-model="signup.city" ng-keyup="hitme()"> 
                 </label>
+
                 <label class="item item-input">
                     <span class="input-label">Pin</span>
-                    <input type="text" placeholder="" ng-model="signup.pin">
+                    <input type="number" placeholder="" ng-model="signup.pin">
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">Doctor's Name</span>
+                    <span class="input-label">Doctor Name</span>
                     <input type="text" placeholder="" ng-model="signup.drname">
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">Doctor's Place</span>
+                <!--<label class="item item-input">
+                    <span class="input-label">Doctor Place</span>
                     <input type="text" placeholder="" ng-model="signup.drplace">
+                </label>-->
+
+                <label class="item item-input" name="Cities">
+                  <span class="input-label">Doctor Place</span>
+                  <input type="text" id="drPlace" class="autocomplete" ng-model="signup.drplace" ng-keyup="hitme()">
                 </label>
+
                 <label class="item item-input">
                     <span class="input-label">Password</span>
                     <input type="password" placeholder="**********" ng-model="signup.password">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Confirm Password</span>
-                    <input type="password" placeholder="*************" ng-model="signup.repassword">
+                    <input type="password" placeholder="*************" ng-model="signup.cpassword">
                 </label>
             </ion-list>
             <button class="button button-energized button-block" ng-click="CreateUser()">Sign up</button>
         </form>
     </ion-content>
-</ion-view></script>
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+</script>
 
 <script id="mainContainer.html" type="text/ng-template">
 
@@ -220,12 +328,14 @@
 
         <ion-side-menu side="left">
             
-            <ion-content has-header="true">
+            <ion-content has-header="true" style="background-color:#182d60;color:white;">
                 <ul class="list">
-                    <a ui-sref="main.page4" class="item" ng-click="toggleMenu()">Home</a>
-                    <a ui-sref="main.page6" class="item" ng-click="toggleMenu()">Add Today Calorie</a>
-                    <a ui-sref="" class="item" ng-click="toggleMenu()">My Profile</a>
-                    <a ui-sref="page2" class="item" ng-click="toggleMenu()">Log Out</a>
+                    <a menu-close ui-sref="main.page4" class="item" ng-click="" style="background-color:#182d60;color:white;border:0px">Home</a>
+                    <a menu-close ui-sref="main.page6" class="item" ng-click="toggleLeft()" style="background-color:#182d60;color:white;border:0px">Add Today Calorie</a>
+                    <a menu-close ui-sref="main.page11" class="item" ng-click="" style="background-color:#182d60;color:white;border:0px">Edit Profile</a>
+                    <a menu-close ui-sref="main.page10" class="item" ng-click="" style="background-color:#182d60;color:white;border:0px">Change Password</a>
+                    <a menu-close ui-sref="main.about" class="item" ng-click="" style="background-color:#182d60;color:white;border:0px">About us</a>
+                    <a menu-close ui-sref="page2" class="item" ng-click="logOut()" style="background-color:#182d60;color:white;border:0px">Log Out</a>
                 </ul>
             </ion-content>
         </ion-side-menu>
@@ -236,33 +346,34 @@
 </script>
 
 <script id="page4.html" type="text/ng-template">
-  <ion-view >
-    <ion-content >
-      <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
-        <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
-        <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
-      
+
+<ion-header-bar align-title="center" class="bar-energized" >
+<div class="buttons">
+   <button  menu-toggle="left" class="button button-icon icon ion-navicon mymenu" style="z-index:9999; padding-top:10px; padding-left:15px;"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
             <div>
-              <h4>Welcome</h4> <h3> {{myservice.name}} </h3>    
+              <h4>Welcome, <span>{{name}}</span> </h3>    
             </div>
             <ion-list>
-              <ion-item ng-repeat="calorie in calorielists ">
-                <a class="item item-icon-right" href="#/main/detailcalories/{{calorie.date}}">{{calorie.date}}  {{calorie.calories}} calories<i class="icon ion-chevron-right"></i></a>
+              <ion-item ng-repeat="calorie in calorielists" style="border:0px!important; background-color:#F8F8F8;" >
+                <a class="item item-icon-right" href="#/main/detailcalories/{{calorie.date}}" style="background-color:#F8F8F8;" ><div style="float:left;width:70%; font-size:18px;color:#5B7E95;font-weight:bold" ng-class="{true: 'red', false: ''}[calorie.calories == max]">{{calorie.date | formatDate}} </div> <div style="float:left;width:30%;font-size:15px;color:#5B7E95;"  ng-class="{true: 'red', false: ''}[calorie.calories == max]"> {{calorie.calories}} calories</div><i class="icon ion-chevron-right" style="color:#5B7E95;" ng-class="{true: 'red', false: ''}[calorie.calories == max]"></i></a>
               </ion-item>
             </ion-list>
-            <a href="#/main/todayscalorie" class="button button-energized button-block trans">Enter Today Calorie</a>
-          </div>
-        </div>
+            <a href="#/main/todayscalorie" class="button button-energized button-block">Enter Today Calorie</a>
+         
       </ion-content>
-    </ion-view>
 
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
        
 </script>
 
 <script id="page5.html" type="text/ng-template">
-
-
-    
        <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
        
     <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
@@ -270,82 +381,458 @@
      <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
      <form>
         <label class="item item-input trans">
-            <span class="input-label">E-mail</span>
-           <input  id= "forgetemail" type="email" ng-model="forgetpassword.email" placeholder="abc@abc.com">
+            <span class="input-label trans">E-mail</span>
+           <input  id= "forgetemail" type="text" ng-model="forgetpassword.email" placeholder="abc@abc.com">
         </label>
-        <button class="button button-energized button-block" ng-click="forgetPassword()">Submit</button>
+        <button class="button button-energized button-block trans" ng-click="forgetPassword()">Submit</button>
       </form>
     </div>
 </div>
 </script>
 
 <script id="page6.html" type="text/ng-template">
+ <ion-header-bar align-title="center" class="bar-energized" >
+ <div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px; color:#fff!important;" ng-click="myGoBack()"></button>
+</div>
+<!--<div class="buttons">
+   <button  menu-toggle="left" class="button button-icon icon ion-navicon mymenu" style="z-index:9999; padding-top:10px; padding-left:15px;"></button>
+</div> -->
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
 
-      <ion-view >
-    <ion-content >
-      <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
-       
-    <img src="img/logo.png"  style="margin-top:10%; height : 300px; "/>
-    
-     <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
-     <h1>Enter Calories</h1>
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+     <h4>Enter Calories</h4>
      <form>
-        <label class="item item-input" name="Date">
+        <!-- <label class="item item-input" name="Date">
           <span class="input-label">Date</span>
           <input type="date" ng-model="todayscalorie.date">
-        </label>
+        </label> -->
+        <br>
+        <div id="TextBoxesGroup">
+          <label class="item item-select" name="Events">
+            <span class="input-label">Events</span>
+           
+             <select ng-model="todayscalorie.event[0]" id = "0" ng-click="testClick($event)" ng-change="getDishes(todayscalorie.event[0])">
+              <option ng-value="1" value="1">Break Fast</option>
+              <option ng-value="2" value="2">Lunch</option>
+              <option ng-value="3" value="3">Dinner</option>
+              <option ng-value="4" value="4">Beverages</option>
+              <option ng-value="5" value="5">Snacks</option>
+            </select>
+          </label>
         
-        <label class="item item-select" name="Events">
-          <span class="input-label">Events</span>
-          <select ng-model="todayscalorie.event" ng-change="getDishes()">
-            <option ng-value="1">Break Fast</option>
-            <option ng-value="2">Lunch</option>
-            <option ng-value="3">Dinner</option>
-          </select>
-        </label>
-        
-        <label class="item item-select" name="Select Dish">
-          <span class="input-label">Select Dish</span>
-          <select id="CitySelector" ng-model="todayscalorie.dish">
-            <option ng-repeat="dish in dishes" value="{{dish.id}}">{{dish.name}}</option>
+          <label class="item item-select" name="Select Dish">
+            <span class="input-label">Select Dish</span>
+            <select id="CitySelector" ng-model="todayscalorie.dish[0]">
+              <option ng-repeat="dish in dishes[0]" value="{{dish.id}}">{{dish.name}}</option>
+            </select>
+          </label>
+
+          <label class="item item-select" name="Select Quantity">
+          <span class="input-label">Select Quantity</span>
+          <select ng-model="todayscalorie.quantity[0]">
+            <option ng-value="1">1</option>
+            <option ng-value="2">2</option>
+            <option ng-value="3">3</option>
+            <option ng-value="4">4</option>
+            <option ng-value="5">5</option>
           </select>
         </label>
 
+        </div>      
+        <input type="hidden" id="ctr" name="ctr" value="1"/>
+        <input type="hidden" id="iid" name="iid" value="0"/>
+        <addbuttonsbutton></addbuttonsbutton>
         <button class="button button-energized button-block" ng-click="AddCalorie()">Submit</button>
+        
       </form>
-    </div>
-</div>
+
       </ion-content>
-    </ion-view>
-    
-       
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+
+</script>
+
+<script>
+function addDish(){
+
+  var newTextBoxDiv = $(document.createElement('div1'))
+        .attr("id", 'TextBoxDiv').attr("ng-controller", 'todayscalorieCtrl');
+
+  var newTextBoxDiv1 = $(document.createElement('div1'))
+        .attr("id", 'TextBoxDiv1');
+
+  newTextBoxDiv.after().html('<label class="item item-select" name="Events"><span class="input-label">Events</span><select ng-model="todayscalorie.event" ng-change="getDishes()" onchange="test(this.value)">'+'<option>Select Event</option><option ng-value="1" value="1">Break Fast</option><option ng-value="2" value="2">Lunch</option><option ng-value="3" value="3">Dinner</option>option ng-value="4">Beverages</option><option ng-value="5">Snacks</option></select></label>');
+ 
+ newTextBoxDiv1.after().html('<label class="item item-select" name="Select Dish"><span class="input-label">Select Dish</span><select id="dishSelector" ng-model="todayscalorie.dish">' +
+        '<option ng-repeat="dish in dishes" value="{{dish.id}}">Select Dish</option></select></label><br /><br />');
+
+  newTextBoxDiv.appendTo("#TextBoxesGroup");
+  newTextBoxDiv1.appendTo("#TextBoxesGroup");
+     }
+
+     function test(id){
+      //alert(id);  
+      $.ajax({
+        url: "http://calorie.textilemarketresearch.com/services/getDishes?cat="+id,
+        success:function(data){
+          //alert(data[1].name);
+          var select = $("#dishSelector");
+          select.children().remove();
+          $.each(data,function(index,item){
+            $("#dishSelector").append($('<option></option>').val(item.name).html(item.name));
+          });
+          //var select = $("#dishSelector");
+          //$("#dishSelector").append($('<option></option>').val(data[1].name).html(data[1].name));
+          /*if (data.name) {
+                  $('#dishSelector').append(
+                            $('<option></option>').val("please select").html("Please select")
+                        );                 
+                    $.each(data.name,function(index, item) {
+                      
+                      $('#dishSelector').append(
+                                $('<option></option>').val(item).html(item)
+                            );                            
+                    });
+                }*/
+        } 
+        /*success: function(result){
+        alert(result);
+        }
+      });*/
+    });
+     }
+
 </script>
 
 <script id="page7.html" type="text/ng-template"> 
-   <div style="margin:0 auto;text-align:center; background; background-image: url('img/bg.jpg');background-repeat:no-repeat; background-size:100%"> 
-     <div style="width:90%;margin:0 auto;text-align:center; padding-left:5%;padding-right:5%">
-          <p>Calories Level :
-            <strong>Medium</strong>
+   <ion-header-bar align-title="center" class="bar-energized"  style="background-image: url('img/bg.jpg')!important;background-repeat:no-repeat!important; background-size:100%!important">
+<div class="buttons">
+   <button class="button-icon icon ion-ios7-arrow-back" style="z-index:9999; padding-top:10px; padding-left:15px; color:#fff!important;" ng-click="myGoBack()"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+          <div ng-show="totalcalories >= 2500" style="float:left;width:70%; font-size:18px;color:#5B7E95!important;font-weight:bold"> <h4><p>Calories Level :
+            <span ng-class="{true: 'red', false: ''}[totalcalories >= 2500]">High</span></h4>
+          </p><p style="font-size:12px!important; text-align:center">
+            <div style="font-size:12px!important; text-align:center">
+    Hi {{user}} your calorie consumption for the day is {{totalcalories}} <span ng-class="{true: 'red', false: ''}[totalcalories >= 2500]">Which is HIGH </span></div>
           </p>
-          <h1 style="" ng-model="date">{{date}}</h1>
+          </div>
+          <div ng-show="totalcalories >= 1500 && totalcalories <= 2500" style="float:left;width:70%; font-size:18px;color:#5B7E95!important;font-weight:bold"> <h4><p>Calories Level :
+            <span ng-class="{true: 'green', false: ''}[totalcalories >= 2000 && totalcalories <= 2500]">Optimum</span></h4>
+          </p><p style="font-size:12px!important; text-align:center">   
+        <div style="font-size:12px!important; text-align:center">
+          Hi {{user}} your calorie consumption for the day is {{totalcalories}} <span ng-class="{true: 'green', false: ''}[totalcalories >= 2000 && totalcalories <= 2500]"> Which is OPTIMUM </span></div>
+          </p>
+          </div>
+          <div ng-show = "totalcalories <= 1500" style="float:left;width:70%; font-size:18px;color:#5B7E95!important;font-weight:bold"> <h4><p>Calories Level :
+            <span ng-class="{true: 'black', false: ''}[totalcalories <= 1500]">Low</span></h4>
+          </p>
+          <p style="font-size:12px!important; text-align:center">        
+    <div ng-show = "totalcalories <= 1500" style="font-size:12px!important; text-align:center">
+    Hi {{user}} your calorie consumption for the day is {{totalcalories}} <span ng-class="{true: 'black', false: ''}[totalcalories <= 1500]"> Which is LOW </span></div>
+          </div></p></div>
+          <div>
+           
+
+          <div style="width:30%;float:left" class="button-energized" ng-model="date"><button class="button button-energized button-block" >{{date | date : 'mediumDate'}}</button></div>
+          </div>
         <div style="width: 300px; height: 51px;" class="spacer"></div>
-        <div style="">
-            <table style="width:100%" >
+        <div style="float:none; width:100%">
+
+
+         <!-- <table style="width:100%" >
                 <tbody ng-repeat="caloriedetail in caloriesdetails" >
                     <tr>
-                        <td>{{caloriedetail.dish_id | checkDish}}</td>
-                        <td>{{caloriedetail.name}}</td>
-                        <td>{{caloriedetail.calories}} calories</td>
+                    <th style="padding: 5px;">Event</th>
+                    <th style="padding: 5px;">Dish Name</th>
+                    <th style="padding: 5px;">Calories</th>
+                    <th style="padding: 5px;">Qty</th>
+                    <th style="padding: 5px;">Total</th>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.event | checkEvent}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.name}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.calories}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.qty}}</td>
+                        <td style="text-align:center;padding: 5px;">{{caloriedetail.calories * caloriedetail.qty}}</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
+                  
+            <ion-list>
+                 <ion-item style="border:0px!important; background-color:#13234c;width:100%" >
+                        <div style="width:20%;float:left;font-weight:bold;font-size:13px;color:#fff!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">Event</div>
+                        <div style="width:25%;float:left;font-weight:bold;font-size:13px;color:#fff!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">Dish Name</div>
+                        <div style="width:25%;float:left;font-weight:bold;font-size:13px;color:#fff!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">Calories </div>
+                        <div style="width:15%;float:left;font-weight:bold;font-size:13px;color:#fff!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">Quantity </div>
+                        <div style="width:15%;float:left;font-weight:bold;font-size:13px;color:#fff!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">Total</div>
+                </ion-item> 
+                <ion-item ng-repeat="caloriedetail in caloriesdetails" style="border:0px!important; background-color:#F8F8F8;" >
+                        <div style="width:20%;float:left;font-size:13px;color:#5B7E95!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">{{caloriedetail.event | checkEvent}}</div>
+                        <div style="width:25%;float:left;font-size:13px;color:#5B7E95!important;text-align:center;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">{{caloriedetail.name}}</div>
+                        <div style="width:25%;float:left;font-size:13px;color:#5B7E95!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;text-align:center;">{{caloriedetail.calories}} </div>
+                        <div style="width:15%;float:left;font-size:13px;color:#5B7E95!important;word-wrap: break-word;word-break:break-all;text-overflow:ellipsis;overflow:hidden;">{{caloriedetail.qty}} </div>
+                        <div style="width:15%;float:left;font-size:13px;color:#5B7E95!important;word-wrap: break-word;word-break:break-all;overflow:hidden;text-overflow:ellipsis;">{{caloriedetail.calories * caloriedetail.qty}}</div>
+                </ion-item>
+            </ion-list> 
         </div>
-        <div style="width: 300px; height: 54px;" class="spacer"></div>
-        <h3 style="">Total Calories : 4000</h3>
-    </div>
-</div>
+        <!-- <div style="width: 300px; height: 54px;" class="spacer"></div> -->
+        <button class="button button-energized button-block" >Total Calories : {{caloriesdetails | totalSumPriceQty:'calories':'qty'}}</button>
+    </ion-content>
+    <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+
 </script>
 
+
+<script id="page8.html" type="text/ng-template">
+<ion-view>
+  <ion-header-bar align-title="center" class="bar-energized" >
+<div class="buttons">
+   <!--<button  menu-toggle="left" class="button button-icon icon ion-navicon mymenu" style="z-index:9999; padding-top:10px; padding-left:15px;"></button> -->
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+  
+  <img src="img/abt.jpg" height="100%" width="100%">
+       <!-- <h4>About us</h4>
+            <p>About Us
+                <strong>Page</strong>
+                About us text goes here. We can replace this text
+            </p>
+        </div>
+        <div style="width: 300px; height: 344px;" class="spacer"></div> -->
+        <!-- <button class="button button-energized button-block trans" ng-click="appLaunch()">Next</button> -->
+        </ion-content>
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+  </ion-view>
+  <!--<ion-view title="Login" class="calorybg">
+    <ion-content padding="true" class="">
+    <img src="img/abt.jpg" height="100%" width="100%">
+        <div style="">
+            <p>Some friendly
+                <strong>markdown</strong>
+                about application details here the description will come. Testing
+            </p>
+        </div> 
+        <div style="width: 300px; height: 344px;" class="spacer"></div>
+        <button class="button button-energized button-block trans" ng-click="appLaunch()">Next</button> -->
+        </ion-content>
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+  </ion-view>
+</script>
+
+
+<script id="about.html" type="text/ng-template">
+<ion-view>
+  <ion-header-bar align-title="center" class="bar-energized" >
+<div class="buttons">
+   <button  menu-toggle="left" class="button button-icon icon ion-navicon mymenu" style="z-index:9999; padding-top:10px; padding-left:15px;"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+	
+  <img src="img/abt.jpg" height="100%" width="100%">
+       <!-- <h4>About us</h4>
+            <p>About Us
+                <strong>Page</strong>
+                About us text goes here. We can replace this text
+            </p>
+        </div>
+        <div style="width: 300px; height: 344px;" class="spacer"></div> -->
+        <!-- <button class="button button-energized button-block trans" ng-click="appLaunch()">Next</button> -->
+        </ion-content>
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+  </ion-view>
+</script>
+
+<script id="page10.html" type="text/ng-template">
+ <ion-header-bar align-title="center" class="bar-energized" >
+<div class="buttons">
+   <button  menu-toggle="left" class="button button-icon icon ion-navicon mymenu" style="z-index:9999; padding-top:10px; padding-left:15px;"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+     <h4>Change Password</h4>
+     <form>
+        <label class="item item-input trans">
+            <span class="input-label trans">E-mail</span>
+           <input  id= "changeemail" disabled type="email" ng-model="changepassword.email" placeholder="abc@abc.com">
+        </label>
+         <label class="item item-input trans">
+            <span class="input-label trans">Old password</span>
+           <input  id= "changeoldpass" type="password" ng-model="changepassword.oldPass" placeholder="*****">
+        </label>
+         <label class="item item-input trans">
+            <span class="input-label trans">New password</span>
+           <input  id= "changenewpass" type="password" ng-model="changepassword.newPass" placeholder="*****">
+        </label>
+        <button class="button button-energized button-block" ng-click="changePassword()">Submit</button>
+      </form>
+    </ion-content>
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+</script>
+
+<script id="page11.html" type="text/ng-template">
+ <ion-header-bar align-title="center" class="bar-energized" >
+<div class="buttons">
+   <button  menu-toggle="left" class="button button-icon icon ion-navicon mymenu" style="z-index:9999; padding-top:10px; padding-left:15px;"></button>
+</div>
+<h1 class="title"><img src='img/logo.png'  style=' height : 75px; '/></h1>
+
+</ion-header-bar>
+    <ion-content padding="true" scroll="true" class="has-header">
+        <form>
+            <ion-list>
+                <label class="item item-input ">
+                    <span class="input-label">Name</span>
+                    <input type="text" placeholder="ABCD FULLNAME" ng-model="edit.fullname">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">DOB</span>
+                    <input type="date" placeholder="Date of Birth" ng-model="edit.dob">
+                </label>
+                <label class="item item-select" name="Gender">
+                    <span class="input-label">Gender</span>
+                    <!--<select ng-model="edit.gender">
+                      <option ng-value="1">Male</option>
+                      <option ng-value="2">Female</option>
+                    </select> -->
+                    <select ng-model="edit.gender" ng-options="opt.name for opt in genderOpts track by opt.value">
+                     </select>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Height-Feet</span>
+                    <input type="text" placeholder="Feets" ng-model="edit.heightfeet">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Height-Inches</span>
+                    <input type="text" placeholder="Inches" ng-model="edit.heightinches">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Weight</span>
+                    <input type="text" placeholder="50 KG" ng-model="edit.weight">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Waistline</span>
+                    <input type="text" placeholder="40 cms" ng-model="edit.waistline">
+                </label>
+                <label class="item item-select" name="Drinker">
+                    <span class="input-label">Drinker</span>
+                    <!--<select ng-model="edit.drinker">
+                      <option ng-value="1">Everyday</option>
+                      <option ng-value="2">Once a week</option>
+                      <option ng-value="3">Once a fortnight</option>
+                      <option ng-value="4">Once a month</option>
+                    </select> -->
+                    <select ng-model="edit.drinker" ng-options="opt.name for opt in drinkerOpts track by opt.value">
+                     </select>
+                </label>
+                <label class="item item-select" name="Married">
+                    <span class="input-label">Married</span>
+                    <!-- <select ng-model="edit.married">
+                      <option ng-value="1">Single</option>
+                      <option ng-value="2">Married</option>
+                      <option ng-value="3">Divorced</option>
+                      <option ng-value="4">Widow</option>
+                    </select> -->
+                     <select ng-model="edit.married" ng-options="opt.name for opt in marriedOpts track by opt.value">
+                     </select>
+                </label>
+
+                <label class="item item-select" name="Diabetic">
+                    <span class="input-label">Diabetic</span>
+                     <select ng-model="edit.daibetic" ng-options="opt.name for opt in opts track by opt.value">
+                     </select>
+                </label>
+                 <label class="item item-select" name="Hypertensive">
+                    <span class="input-label">Hypertensive</span>
+                    <select ng-model="edit.hypertensive" ng-options="opt.name for opt in opts track by opt.value">
+                     </select>
+                </label>
+                <label class="item item-select" name="Hypertensive">
+                    <span class="input-label">Kidney Problem</span>
+                    <select ng-model="edit.kidney" ng-options="opt.name for opt in opts track by opt.value">
+                     </select>
+                </label>
+                <label class="item item-select" name="Smoker">
+                    <span class="input-label">Smoker</span>
+                    <select ng-model="edit.smoker" ng-options="opt.name for opt in opts track by opt.value">
+                     </select>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Mobile</span>
+                    <input type="text" placeholder="1234567890" ng-model="edit.mobile">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">E-mail</span>
+                    <input type="email" placeholder="abc@abc.com" ng-model="edit.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Street 1</span>
+                    <input type="text" placeholder="" ng-model="edit.street1">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Street 2</span>
+                    <input type="text" placeholder="" ng-model="edit.street2">
+                </label>
+                <!-- <label class="item item-select" name="Cities">
+                    <span class="input-label">City</span>
+                    <select id="CitySelector" ng-model="edit.city">
+                      <option ng-repeat="city in cities" value="{{city.city_id}}">{{city.city_name}}</option>
+                    </select>
+                </label> -->
+                <label class="item item-input" name="Cities">
+                  <span class="input-label">City</span>
+                  <input type="text" id="cityName" class="autocomplete" ng-model="edit.city" ng-keyup="hitme()"> 
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Pin</span>
+                    <input type="text" placeholder="" ng-model="edit.pin">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Doctor Name</span>
+                    <input type="text" placeholder="" ng-model="edit.drname">
+                </label>
+                <!-- <label class="item item-input">
+                    <span class="input-label">Doctor Place</span>
+                    <input type="text" placeholder="" ng-model="edit.drplace">
+                </label> -->
+                <label class="item item-input" name="Cities">
+                  <span class="input-label">Doctor Place</span>
+                  <input type="text" id="drPlace" class="autocomplete" ng-model="edit.drplace" ng-keyup="hitme()">
+                </label>
+            </ion-list>
+            <button class="button button-energized button-block" ng-click="editUser()">Save Profile</button>
+        </form>
+    </ion-content>
+ <ion-footer-bar>
+   <div style="text-align:right; font-weight:bold;width:100%"> Powered by RPVAS </div>
+    </ion-footer-bar>
+</script>
+
+</script>
 <style>
     .button-calorie
     {
@@ -353,6 +840,29 @@
         background-color: #182d60;
         opacity: 0.8;
     }
+    h4{
+        color:#182d60;
+        text-align: center;
+        font-size: 24px;
+    }
+    h4 span{
+        color:#D83426;
+    }
+    body{
+        color:#5B7E95;
+    }
+    .item.active, .item.activated, .item-complex.active .item-content, .item-complex.activated .item-content, .item .item-content.active, .item .item-content.activated
+    {
+        color:#5B7E95!important;
+    }
+    .activer{
+        background-color:#D83426!important;
+    }
 </style>
   </body>
 </html>
+
+
+
+
+
